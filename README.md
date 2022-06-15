@@ -1,6 +1,7 @@
 # MicroServices.Playground
 Getting started
 Use the following command to run an instance of RabbitMQ
+
 docker run --hostname my-rabbit --name some-rabbit -p 80:15672 -p 5672:5672 rabbitmq:3-management-alpine
 
 run all three projects

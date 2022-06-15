@@ -22,7 +22,7 @@ public class CreatePerson
             await _ctx.People.AddAsync(person, cancellationToken);
 
             await _capPublisher.PublishAsync(nameof(PersonCreatedIntegrationMessage),
-                new PersonCreatedIntegrationMessage(person.FirstName, person.LastName, person.Email),
+                new PersonCreatedIntegrationMessage(person.Id, person.FirstName, person.LastName, person.Email),
                 cancellationToken: cancellationToken);
 
             return default;

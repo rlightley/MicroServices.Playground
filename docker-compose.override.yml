@@ -1,0 +1,57 @@
+version: '3.4'
+
+services:
+  sql.data:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"
+
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  microservices.playground.serviceone.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__DefaultConnection=server=sql.data;Database=ApiOne;User Id=sa;Password=Pass@word
+      - EventBus__AzureServiceBusEnabled=False
+      - EventBus__Connection=rabbitmq
+      - EventBus__UserName=guest
+      - EventBus__Password=guest
+    ports:
+      - "5001:80"
+      - "5010:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  microservices.playground.servicetwo.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__DefaultConnection=server=sql.data;Database=ApiTwo;User Id=sa;Password=Pass@word
+      - EventBus__AzureServiceBusEnabled=False
+      - EventBus__Connection=rabbitmq
+      - EventBus__UserName=guest
+      - EventBus__Password=guest
+    ports:
+      - "5002:80"
+      - "5020:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  microservices.playground.webapp:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "5003:80"
+      - "5030:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

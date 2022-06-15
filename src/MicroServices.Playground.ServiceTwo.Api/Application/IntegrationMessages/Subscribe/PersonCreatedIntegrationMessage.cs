@@ -2,12 +2,23 @@
 
 public class PersonCreatedIntegrationMessage
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public Guid Id { get; set; }
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
 }
 
+[UsedImplicitly]
 public class PersonCreatedIntegrationMessageHandler : ICapSubscribe
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    private readonly ApplicationDbContext _ctx;
+
+    public PersonCreatedIntegrationMessageHandler(ApplicationDbContext ctx) => _ctx = ctx;
+
+    [UsedImplicitly]
+    [CapSubscribe(nameof(PersonCreatedIntegrationMessage))]
+    public async Task Handle(PersonCreatedIntegrationMessage msg)
+    {
+        await _ctx.People.AddAsync(new Person(msg.Id, msg.FirstName, msg.LastName));
+        await _ctx.SaveChangesAsync();
+    }
 }

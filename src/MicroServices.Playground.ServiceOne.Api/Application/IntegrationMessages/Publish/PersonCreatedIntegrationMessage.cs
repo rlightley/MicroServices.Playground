@@ -2,13 +2,15 @@
 
 public class PersonCreatedIntegrationMessage
 {
-    public PersonCreatedIntegrationMessage(string firstName, string lastName, string email)
+    public PersonCreatedIntegrationMessage(Guid id, string firstName, string lastName, string email)
     {
+        Id = id;
         FirstName = firstName;
         LastName = lastName;
         Email = email;
     }
-
+    
+    public Guid Id { get; set; }
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string Email { get; init; }

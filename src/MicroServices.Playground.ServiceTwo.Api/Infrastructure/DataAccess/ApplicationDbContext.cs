@@ -8,7 +8,8 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfiguration(new PersonDbConfiguration());
     }
 
-    public DbSet<Person> People { get; set; }
+    public DbSet<Person> People { get; set; } = null!;
 }

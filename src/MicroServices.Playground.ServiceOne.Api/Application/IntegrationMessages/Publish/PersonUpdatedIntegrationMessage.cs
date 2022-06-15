@@ -10,7 +10,7 @@ public class PersonUpdatedIntegrationMessage
         Email = email;
     }
 
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     public string FirstName { get; init; }
     public string LastName { get; init; }
     public string Email { get; init; }

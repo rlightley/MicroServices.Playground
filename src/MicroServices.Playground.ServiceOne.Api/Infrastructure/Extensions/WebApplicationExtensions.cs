@@ -21,6 +21,7 @@ public static class WebApplicationExtensions
             }
             Console.WriteLine("Migrating Db context");
             db.Migrate();
+
         }
         catch (Exception ex)
         {

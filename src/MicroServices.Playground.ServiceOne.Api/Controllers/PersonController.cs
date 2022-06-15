@@ -14,6 +14,6 @@ public class PersonController : ControllerBase
     [HttpPatch]
     public async Task<IActionResult> UpdatePerson([FromBody] UpdatePerson.Command cmd) => Ok(await _mediator.Send(cmd));
 
-    [HttpDelete]
-    public async Task<IActionResult> DeletePerson([FromBody] DeletePerson.Command cmd) => Ok(await _mediator.Send(cmd));
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeletePerson(Guid id) => Ok(await _mediator.Send(new DeletePerson.Command(id)));
 }

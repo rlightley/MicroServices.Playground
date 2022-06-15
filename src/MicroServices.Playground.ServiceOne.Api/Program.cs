@@ -14,7 +14,7 @@ static void RegisterServices(IServiceCollection services, IConfiguration config)
     services.AddMediatR(typeof(Program));
     services.AddControllers();
     services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen();
+    services.AddSwaggerGen(options => options.CustomSchemaIds(type => type.ToString()));
     services.AddCustomEvents(config);
     services.AddEventHandlers();
 }
@@ -22,14 +22,8 @@ static void RegisterServices(IServiceCollection services, IConfiguration config)
 
 static void ConfigureApplication(WebApplication app)
 {
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
-
-    app.UseHttpsRedirection();
-    app.UseAuthorization();
+    app.UseSwagger();
+    app.UseSwaggerUI();
     app.MapControllers();
     app.MigrateDb();
 }

@@ -2,10 +2,21 @@
 
 public class UpdatePerson
 {
-    public record Command(Guid Id, string FirstName, string LastName, string Email) : IRequest<Unit>;
+    public record Command : IRequest<Result>
+    {
+        public Guid Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class Result
+    {
+        public Guid Id { get; set; }
+    }
 
     [UsedImplicitly]
-    public class Handler : IRequestHandler<Command, Unit>
+    public class Handler : IRequestHandler<Command, Result>
     {
         private readonly ICapPublisher _capPublisher;
         private readonly ApplicationDbContext _ctx;
@@ -16,7 +27,7 @@ public class UpdatePerson
             _ctx = ctx;
         }
 
-        public async Task<Unit> Handle(Command command, CancellationToken cancellationToken)
+        public async Task<Result> Handle(Command command, CancellationToken cancellationToken)
         {
             var person = await _ctx.People
                 .SingleOrDefaultAsync(x => x.Id == command.Id, cancellationToken);
@@ -34,7 +45,10 @@ public class UpdatePerson
                     command.FirstName, command.LastName, command.Email),
                 cancellationToken: cancellationToken);
 
-            return default;
+            return new Result
+            {
+                Id = person.Id
+            };
         }
     }
 }

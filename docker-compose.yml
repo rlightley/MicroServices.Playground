@@ -19,10 +19,3 @@ services:
       context: .
       dockerfile: src/MicroServices.Playground.ServiceTwo.Api/Dockerfile
 
-
-  microservices.playground.webapp:
-    image: ${DOCKER_REGISTRY-}microservicesplaygroundwebapp
-    build:
-      context: .
-      dockerfile: src/MicroServices.Playground.WebApp/Dockerfile
-

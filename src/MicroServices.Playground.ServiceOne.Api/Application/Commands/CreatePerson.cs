@@ -2,10 +2,20 @@
 
 public class CreatePerson
 {
-    public record Command(string FirstName, string LastName, string Email) : IRequest<Unit>;
+    public record Command : IRequest<Result>
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class Result
+    {
+        public Guid Id { get; set; }
+    }
 
     [UsedImplicitly]
-    public class Handler : IRequestHandler<Command, Unit>
+    public class Handler : IRequestHandler<Command, Result>
     {
         private readonly ICapPublisher _capPublisher;
         private readonly ApplicationDbContext _ctx;
@@ -16,7 +26,7 @@ public class CreatePerson
             _ctx = ctx;
         }
 
-        public async Task<Unit> Handle(Command command, CancellationToken cancellationToken)
+        public async Task<Result> Handle(Command command, CancellationToken cancellationToken)
         {
             var person = new Person(command.FirstName, command.LastName, command.Email);
             await _ctx.People.AddAsync(person, cancellationToken);
@@ -25,7 +35,10 @@ public class CreatePerson
                 new PersonCreatedIntegrationMessage(person.Id, person.FirstName, person.LastName, person.Email),
                 cancellationToken: cancellationToken);
 
-            return default;
+            return new Result
+            {
+                Id = person.Id
+            };
         }
     }
 }

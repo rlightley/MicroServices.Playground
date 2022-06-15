@@ -2,10 +2,15 @@
 
 public class DeletePerson
 {
-    public record Command(Guid Id) : IRequest<Unit>;
+    public record Command(Guid Id) : IRequest<Result>;
+
+    public class Result
+    {
+        public Guid Id { get; set; }
+    }
 
     [UsedImplicitly]
-    public class Handler : IRequestHandler<Command, Unit>
+    public class Handler : IRequestHandler<Command, Result>
     {
         private readonly ICapPublisher _capPublisher;
         private readonly ApplicationDbContext _ctx;
@@ -16,7 +21,7 @@ public class DeletePerson
             _ctx = ctx;
         }
 
-        public async Task<Unit> Handle(Command command, CancellationToken cancellationToken)
+        public async Task<Result> Handle(Command command, CancellationToken cancellationToken)
         {
             var person = await _ctx.People
                 .SingleOrDefaultAsync(x => x.Id == command.Id, cancellationToken);
@@ -33,7 +38,10 @@ public class DeletePerson
                 new PersonDeletedIntegrationMessage(person.Id),
                 cancellationToken: cancellationToken);
 
-            return default;
+            return new Result
+            {
+                Id = person.Id
+            };
         }
     }
 }

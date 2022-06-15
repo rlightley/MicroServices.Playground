@@ -1,4 +1,6 @@
-﻿namespace MicroServices.Playground.ServiceTwo.Api.Domain.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MicroServices.Playground.ServiceTwo.Api.Domain.Models;
 
 public class Person : BaseEntity
 {

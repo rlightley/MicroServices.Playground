@@ -1,5 +1,11 @@
 ﻿global using DotNetCore.CAP;
+global using MediatR;
+global using MicroServices.Playground.ServiceOne.Api.Application.Commands;
+global using MicroServices.Playground.ServiceOne.Api.Application.IntegrationMessages.Publish;
 global using MicroServices.Playground.ServiceOne.Api.Domain.Models;
 global using MicroServices.Playground.ServiceOne.Api.Infrastructure.DataAccess;
 global using MicroServices.Playground.ServiceOne.Api.Infrastructure.Extensions;
+global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using JetBrains.Annotations;

@@ -2,9 +2,9 @@
 
 public abstract class BaseEntity
 {
-    protected BaseEntity()
+    protected BaseEntity(Guid? id = null)
     {
-        Id = Guid.NewGuid();
+        Id = id ?? Guid.NewGuid();
         CreatedDateTime = DateTime.UtcNow;
     }
 

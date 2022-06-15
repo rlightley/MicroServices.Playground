@@ -5,3 +5,9 @@ public class PersonCreatedIntegrationMessage
     public string FirstName { get; set; }
     public string LastName { get; set; }
 }
+
+public class PersonCreatedIntegrationMessageHandler : ICapSubscribe
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+}

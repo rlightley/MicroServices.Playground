@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 RegisterServices(builder.Services, builder.Configuration);
 
@@ -13,6 +11,7 @@ static void RegisterServices(IServiceCollection services, IConfiguration config)
         options.UseSqlServer(config["ConnectionStrings:DefaultConnection"],
             sqlOptions => { sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null); }));
 
+    services.AddMediatR(typeof(Program));
     services.AddControllers();
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
@@ -32,5 +31,5 @@ static void ConfigureApplication(WebApplication app)
     app.UseHttpsRedirection();
     app.UseAuthorization();
     app.MapControllers();
+    app.MigrateDb();
 }
-

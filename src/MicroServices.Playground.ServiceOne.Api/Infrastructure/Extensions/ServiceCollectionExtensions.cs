@@ -7,7 +7,7 @@ public static class ServiceCollectionExtensions
         {
             options.UseDashboard(dashboardOptions =>
             {
-                dashboardOptions.PathMatch = $"{config.GetValue<string>("PathBase", string.Empty)}/cap";
+                dashboardOptions.PathMatch = $"{config.GetValue("PathBase", string.Empty)}/cap";
             });
             options.UseSqlServer(opt =>
             {
